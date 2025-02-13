@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Growth & Shrink</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ffe6e9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .mainDiv {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 10px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .headerText {
+            font-size: 30px;
+            color: black;
+            font-weight: bold;
+            animation: fadeIn 2s ease-out;
+        }
+
+        #yesBtn, #noBtn {
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease, font-size 0.3s ease;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        #yesBtn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #noBtn {
+            background-color: #FF4136;
+            color: white;
+        }
+
+        #imageContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        img {
+            width: 100%;
+            max-width: 300px;
+            transition: transform 0.5s ease;
+        }
+
+        .btnDiv {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            width: 100%;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes gifShake {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            50% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        #finalGif {
+            display: none;
+            animation: gifShake 1s infinite;
+        }
+
+        /* Media Queries for Responsive Design */
+        @media (max-width: 768px) {
+            .headerText {
+                font-size: 24px; 
+            }
+
+            #yesBtn, #noBtn {
+                font-size: 14px;
+                padding: 8px 16px;
+                max-width: 150px;
+            }
+
+            img {
+                max-width: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .headerText {
+                font-size: 20px; 
+            }
+
+            #yesBtn, #noBtn {
+                font-size: 12px;
+                padding: 6px 12px;
+                max-width: 120px;
+            }
+
+            img {
+                max-width: 200px;
+            }
+
+            .mainDiv {
+                gap: 15px;
+            }
+        }
+
+        .endText {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        #finalMessage {
+            font-size: 24px;
+            color: black;
+            font-weight: bold;
+        }
+
+        #secondMessage {
+            font-size: 24px;
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="mainDiv">
+        <div class="headerText" id="headerText">Will you be my Valentine?</div>
+
+        <div id="imageContainer">
+            <img src="" id="gifImage" />
+        </div>
+
+        <div class="btnDiv" id="btnDiv">
+            <button id="yesBtn" onclick="yesBtnHandler()">Yes</button>
+            <button id="noBtn" onclick="noBtnHandler()">No</button>
+        </div>
+    </div>
+
+    <div id="finalGif">
+        <img src="./gifs/mad cat gif.gif" />
+    </div>
+
+    <div class="endText" id="endText">
+        <div id="finalMessage">I hate you!</div>
+        <div id="secondMessage">Enjoy Celebrating Valentine Alone this year 😡!</div>
+    </div>
+
+    <script>
+        let yesScale = 1;
+        let noScale = 1;
+
+        function yesBtnHandler() {
+            document.getElementById("headerText").innerHTML = "I love you!";
+            document.getElementById("gifImage").src = "./gifs/Happy Cat GIF by MochiDad.gif";
+            document.getElementById("btnDiv").style.display = "none";
+        }
+
+        function noBtnHandler() {
+            let yesBtn = document.getElementById("yesBtn");
+            let noBtn = document.getElementById("noBtn");
+
+            // Update text and GIF for "No"
+            document.getElementById("headerText").innerHTML = "I hate you!";
+            document.getElementById("gifImage").src = "./gifs/sad cat.gif";
+
+            // Increase "Yes" button size
+            yesScale += 0.1;
+            yesBtn.style.transform = `scale(${yesScale})`;
+
+            // Decrease "No" button size
+            if (noScale > 0.3) {
+                noScale -= 0.1;
+                noBtn.style.transform = `scale(${noScale})`;
+            }
+
+            // Check if "No" button is small enough to show the message
+            if (noScale <= 0.3) {
+                document.getElementById("btnDiv").style.display = "none"; // Hide buttons
+                document.getElementById("finalGif").style.display = "block"; // Show the final gif
+                document.getElementById("endText").style.display = "flex"; // Show the styled text
+                document.getElementById("gifImage").style.display = "none"; // Hide current gif
+            }
+        }
+    </script>
+</body>
+</html>
